@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Code {
+  id        String    @id @default(cuid())
+  code      String    @unique
+  createdAt DateTime  @default(now())
+  expiresAt DateTime
+  usedAt    DateTime?
+  guest     Guest?
+}
+
+model Guest {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  submittedAt DateTime @default(now())
+  isBaseline  Boolean  @default(false)
+  codeId      String   @unique
+  code        Code     @relation(fields: [codeId], references: [id])
+  answers     Answer[]
+}
+
+model Answer {
+  id          String @id @default(cuid())
+  guestId     String
+  guest       Guest  @relation(fields: [guestId], references: [id])
+  questionId  String
+  category    String
+  subcategory String
+  value       Int
+}

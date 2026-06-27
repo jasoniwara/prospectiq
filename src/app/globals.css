@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf3e9;
+  --foreground: #2a2622;
+  --accent: #3a7ce8;
+  --muted: #948a78;
+  --card: #fffdf9;
+  --border: #e7dac4;
+
+  --pi-red: #e8503a;
+  --pi-yellow: #f4b740;
+  --pi-green: #3f9e6d;
+  --pi-blue: #3a7ce8;
+  --pi-cream: #faf3e9;
+  --pi-ink: #2a2622;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-pi-red: var(--pi-red);
+  --color-pi-yellow: var(--pi-yellow);
+  --color-pi-green: var(--pi-green);
+  --color-pi-blue: var(--pi-blue);
+  --color-pi-cream: var(--pi-cream);
+  --color-pi-ink: var(--pi-ink);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-baloo);
+}
+
+body {
+  background: var(--background);
+  background-image: radial-gradient(circle at 1px 1px, rgba(42, 38, 34, 0.05) 1px, transparent 0);
+  background-size: 22px 22px;
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--border);
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 3px solid var(--card);
+  box-shadow: 0 1px 4px rgba(42, 38, 34, 0.25);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 3px solid var(--card);
+  box-shadow: 0 1px 4px rgba(42, 38, 34, 0.25);
+}
