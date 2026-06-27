@@ -15,6 +15,7 @@ type GuestDetail = {
     firstName: string;
     lastName: string;
     submittedAt: string;
+    isBaseline: boolean;
     answers: Answer[];
   };
   result: {
@@ -42,18 +43,21 @@ export default function GuestDetailClient({ guestId }: { guestId: string }) {
   const [data, setData] = useState<GuestDetail | null>(null);
   const [podcastMode, setPodcastMode] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [settingBaseline, setSettingBaseline] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      const res = await fetch(`/api/host/guests/${guestId}`);
-      if (res.status === 401) {
-        router.push("/host/login");
-        return;
-      }
-      const json = await res.json();
-      setData(json);
-    })();
-  }, [guestId, router]);
+    load();
+  }, [guestId]);
+
+  async function load() {
+    const res = await fetch(`/api/host/guests/${guestId}`);
+    if (res.status === 401) {
+      router.push("/host/login");
+      return;
+    }
+    const json = await res.json();
+    setData(json);
+  }
 
   if (!data) {
     return <main className="flex-1 px-6 py-10 max-w-4xl mx-auto w-full">Loading...</main>;
@@ -108,6 +112,25 @@ export default function GuestDetailClient({ guestId }: { guestId: string }) {
     }
   }
 
+  async function handleSetBaseline() {
+    if (!window.confirm(`Use ${guest.firstName} ${guest.lastName}'s answers as the baseline shown to guests?`)) {
+      return;
+    }
+    setSettingBaseline(true);
+    try {
+      const res = await fetch(`/api/host/guests/${guestId}`, { method: "PATCH" });
+      if (res.status === 401) {
+        router.push("/host/login");
+        return;
+      }
+      if (res.ok) {
+        await load();
+      }
+    } finally {
+      setSettingBaseline(false);
+    }
+  }
+
   if (podcastMode) {
     return (
       <PodcastModeView
@@ -144,6 +167,15 @@ export default function GuestDetailClient({ guestId }: { guestId: string }) {
             ← Back to dashboard
           </Link>
           <div className="flex items-center gap-2">
+            {!guest.isBaseline && (
+              <button
+                onClick={handleSetBaseline}
+                disabled={settingBaseline}
+                className="text-accent text-sm font-semibold px-3 py-2 rounded-lg border border-accent/30 hover:bg-accent/10 transition disabled:opacity-50"
+              >
+                {settingBaseline ? "Setting..." : "★ Set as Baseline"}
+              </button>
+            )}
             <button
               onClick={() => setPodcastMode(true)}
               className="bg-pi-ink text-pi-cream font-display font-bold text-sm rounded-lg px-4 py-2 hover:brightness-110 transition"
@@ -163,6 +195,7 @@ export default function GuestDetailClient({ guestId }: { guestId: string }) {
         <div className="space-y-2">
           <h1 className="font-display font-bold text-3xl tracking-tight">
             {guest.firstName} {guest.lastName}
+            {guest.isBaseline && <span className="text-accent ml-2">★ Baseline</span>}
           </h1>
           <p className="text-muted text-sm">{new Date(guest.submittedAt).toLocaleString()}</p>
           <span

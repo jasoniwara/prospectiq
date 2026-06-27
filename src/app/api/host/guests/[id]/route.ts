@@ -57,6 +57,7 @@ export async function GET(
       firstName: guest.firstName,
       lastName: guest.lastName,
       submittedAt: guest.submittedAt,
+      isBaseline: guest.isBaseline,
       answers: guest.answers.map((a) => ({
         questionId: a.questionId,
         category: a.category,
@@ -71,6 +72,29 @@ export async function GET(
     },
     sampleSize: otherGuests.length,
   });
+}
+
+export async function PATCH(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  if (!(await isHostAuthenticated())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  const guest = await prisma.guest.findUnique({ where: { id } });
+  if (!guest) {
+    return NextResponse.json({ error: "Guest not found" }, { status: 404 });
+  }
+
+  await prisma.$transaction([
+    prisma.guest.updateMany({ where: { isBaseline: true }, data: { isBaseline: false } }),
+    prisma.guest.update({ where: { id }, data: { isBaseline: true } }),
+  ]);
+
+  return NextResponse.json({ ok: true });
 }
 
 export async function DELETE(
