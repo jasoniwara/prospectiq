@@ -344,21 +344,34 @@ function GroupScreen({
   );
 }
 
+const SLIDER_THUMB_SIZE = 26;
+
 function SliderInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const percent = ((value - 1) / 9) * 100;
+
   return (
-    <div className="space-y-2">
-      <input
-        type="range"
-        min={1}
-        max={10}
-        step={1}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full"
-      />
+    <div className="space-y-1">
+      <div className="relative">
+        <span
+          className="absolute -top-5 text-accent font-medium text-sm -translate-x-1/2"
+          style={{
+            left: `calc(${SLIDER_THUMB_SIZE / 2}px + (100% - ${SLIDER_THUMB_SIZE}px) * ${percent / 100})`,
+          }}
+        >
+          {value}
+        </span>
+        <input
+          type="range"
+          min={1}
+          max={10}
+          step={1}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="w-full"
+        />
+      </div>
       <div className="flex justify-between text-xs text-muted">
         <span>1</span>
-        <span className="text-accent font-medium text-sm">{value}</span>
         <span>10</span>
       </div>
     </div>
