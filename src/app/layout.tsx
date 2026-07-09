@@ -20,7 +20,7 @@ const baloo = Baloo_2({
 });
 
 export const metadata: Metadata = {
-  title: "ProspectIQ",
+  title: "2P",
   description: "Pre-podcast intake assessment for student-athletes.",
 };
 

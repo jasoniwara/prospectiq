@@ -41,6 +41,7 @@ export type SubcategoryScore = {
 export type CategoryResult = {
   category: Category;
   score: number;
+  variance: number;
   tier: Tier;
   subcategories: SubcategoryScore[];
 };
@@ -52,6 +53,11 @@ export type ScoringResult = {
   archetype: string;
 };
 
+function calcVariance(scores: number[]): number {
+  const mean = scores.reduce((s, v) => s + v, 0) / scores.length;
+  return scores.reduce((s, v) => s + (v - mean) ** 2, 0) / scores.length;
+}
+
 export function computeScores(answers: AnswerInput[]): ScoringResult {
   const categories: CategoryResult[] = CATEGORIES.map((category) => {
     const subNames = SUBCATEGORIES[category];
@@ -61,17 +67,19 @@ export function computeScores(answers: AnswerInput[]): ScoringResult {
       );
       return { subcategory: sub, score: answer ? answer.value : 0 };
     });
+    const subScores = subcategories.map((s) => s.score);
     const score =
       Math.round(
-        (subcategories.reduce((sum, s) => sum + s.score, 0) / subcategories.length) * 10
+        (subScores.reduce((sum, v) => sum + v, 0) / subScores.length) * 10
       ) / 10;
-    return { category, score, tier: tierForScore(score), subcategories };
+    const variance = calcVariance(subScores);
+    return { category, score, variance, tier: tierForScore(score), subcategories };
   });
 
-  const categoryOrder = [...CATEGORIES];
   const ranked = [...categories].sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
-    return categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
+    // Tie: lower variance wins (more consistent strength)
+    return a.variance - b.variance;
   });
 
   const primary = ranked[0].category;
