@@ -315,11 +315,13 @@ function GroupScreen({
             <p className="text-sm leading-relaxed">{q.text}</p>
             <SliderInput
               value={answers[q.id]}
+              labelLow={q.labelLow}
+              labelHigh={q.labelHigh}
               onChange={(value) => setAnswers((prev) => ({ ...prev, [q.id]: value }))}
             />
             {baseline && baseline.answers[q.id] !== undefined && (
               <p className="text-xs italic text-muted">
-                {baseline.firstName} answered {baseline.answers[q.id]}/10
+                Host answered {baseline.answers[q.id]}/10
               </p>
             )}
           </div>
@@ -346,7 +348,17 @@ function GroupScreen({
 
 const SLIDER_THUMB_SIZE = 26;
 
-function SliderInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+function SliderInput({
+  value,
+  labelLow,
+  labelHigh,
+  onChange,
+}: {
+  value: number;
+  labelLow: string;
+  labelHigh: string;
+  onChange: (v: number) => void;
+}) {
   const percent = ((value - 1) / 9) * 100;
 
   return (
@@ -370,9 +382,9 @@ function SliderInput({ value, onChange }: { value: number; onChange: (v: number)
           className="w-full"
         />
       </div>
-      <div className="flex justify-between text-xs text-muted">
-        <span>1</span>
-        <span>10</span>
+      <div className="flex justify-between text-xs text-muted/70">
+        <span>{labelLow}</span>
+        <span className="text-right">{labelHigh}</span>
       </div>
     </div>
   );

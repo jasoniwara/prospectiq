@@ -1,6 +1,8 @@
 export type Question = {
   id: string;
   text: string;
+  labelLow: string;
+  labelHigh: string;
   category: "Execution" | "Knowledge" | "Influence" | "Resilience";
   subcategory: string;
 };
@@ -13,112 +15,144 @@ export type QuestionGroup = {
 
 const SCHOOL_1: Question = {
   id: "school-1",
-  text: "Your teacher hands out a multiple choice assignment. On a scale of 1-10, how closely do you read the instructions?",
+  text: "Your teacher hands out an assignment. How closely do you read the instructions before starting?",
+  labelLow: "I dive straight in",
+  labelHigh: "I read everything twice",
   category: "Execution",
   subcategory: "Attention to Detail",
 };
 
 const SCHOOL_2: Question = {
   id: "school-2",
-  text: "Your team loses an important game and it's your fault. On a scale of 1-10, how much of the blame do you absorb, rather than deflect?",
+  text: "Your team loses because of you. How much of the blame do you absorb?",
+  labelLow: "I look outward",
+  labelHigh: "I look inward",
   category: "Execution",
   subcategory: "Ownership",
 };
 
 const SCHOOL_3: Question = {
   id: "school-3",
-  text: "You have an exam coming up the following Monday on a topic you feel 'aight' about. Over the weekend, how hard are you studying?",
+  text: "You have an exam Monday on a topic you're just okay at. How hard are you studying this weekend?",
+  labelLow: "I wing it",
+  labelHigh: "I grind it out",
   category: "Execution",
   subcategory: "Work Ethic",
 };
 
 const SCHOOL_4: Question = {
   id: "school-4",
-  text: "You have an exam coming up the following Monday on a topic you didn't pay attention to in class. Over the weekend, how hard are you studying?",
+  text: "You have an exam Monday on a topic you ignored all semester. How hard are you studying this weekend?",
+  labelLow: "I take my chances",
+  labelHigh: "I make up for it",
   category: "Execution",
   subcategory: "Preparation",
 };
 
 const SCHOOL_5: Question = {
   id: "school-5",
-  text: "You're able to sit with the richest person alive for a conversation to pick their brain. If someone asked afterwards what your plan was to make money, on a scale of 1-10, how successful do you think your plan would be?",
+  text: "You get an hour with the richest person alive. How strong is your money plan afterwards?",
+  labelLow: "I walk away empty",
+  labelHigh: "I walk away with a plan",
   category: "Knowledge",
   subcategory: "Capacity",
 };
 
 const SCHOOL_6: Question = {
   id: "school-6",
-  text: "You watch a YouTube video about a really interesting topic. On a scale of 1-10, how far down the rabbit hole do you go before moving on to the next video?",
+  text: "You find a video on a topic you've never thought about. How far down the rabbit hole do you go?",
+  labelLow: "I move on quickly",
+  labelHigh: "I go all the way down",
   category: "Knowledge",
   subcategory: "Curiosity",
 };
 
 const SCHOOL_7: Question = {
   id: "school-7",
-  text: "You're using ChatGPT to help you on an assignment graded on accuracy, but ChatGPT can always be wrong. On a scale of 1-10, assuming you can't use other sources, how likely are you to do the problems yourself?",
+  text: "AI is doing your graded assignment but might be wrong. How likely are you to just do it yourself?",
+  labelLow: "I trust the AI",
+  labelHigh: "I trust myself",
   category: "Knowledge",
   subcategory: "Critical Thinking",
 };
 
 const SCHOOL_8: Question = {
   id: "school-8",
-  text: "Your teacher is coming around to collect homework, and you have one problem left to solve. You need this 100. On a scale of 1-10, how likely are you to pick the one that feels right rather than try to solve it?",
+  text: "One problem left on your homework. Teacher's coming. You need a 100. How likely are you to go with your gut?",
+  labelLow: "I skip it",
+  labelHigh: "I go with my gut",
   category: "Knowledge",
   subcategory: "Intuition",
 };
 
 const LOSS_1: Question = {
   id: "loss-1",
-  text: "Your team loses an important game and it's your fault. On a scale of 1-10, how well do you take the sometimes brutally honest criticism and make adjustments?",
+  text: "Your team loses because of you. How well do you take the criticism and adjust?",
+  labelLow: "I tune it out",
+  labelHigh: "I take it and adjust",
   category: "Resilience",
   subcategory: "Coachability",
 };
 
 const LOSS_2: Question = {
   id: "loss-2",
-  text: "A class has daily warmups that are easy but annoying. On a scale of 1-10, how much dedication will you put into completing those warmups to the best of your ability?",
+  text: "Daily warmups. Easy but annoying. How much effort do you put in every time?",
+  labelLow: "I go through the motions",
+  labelHigh: "I give it everything",
   category: "Resilience",
   subcategory: "Discipline",
 };
 
 const LOSS_3: Question = {
   id: "loss-3",
-  text: "Your team loses an important game and it's your fault. On a scale of 1-10, how often do you take responsibility for the loss without someone else verbally handing it to you?",
+  text: "Your team loses because of you. How likely are you to own it before anyone says a word?",
+  labelLow: "I wait to be called out",
+  labelHigh: "I step up first",
   category: "Resilience",
   subcategory: "Accountability",
 };
 
 const GROUP_1: Question = {
   id: "group-1",
-  text: "You're in a group project and you barely know anyone else in the group. On a scale of 1-10, how likely are you to share your ideas and offer feedback?",
+  text: "Group project, strangers. How likely are you to speak up and give feedback?",
+  labelLow: "I stay quiet",
+  labelHigh: "I speak up",
   category: "Influence",
   subcategory: "Vocality",
 };
 
 const GROUP_2: Question = {
   id: "group-2",
-  text: "You're in a group project and you barely know anyone else in the group. You all have to make a decision on how you'll move forward. On a scale of 1-10, how likely is it that you'll be the one to choose how the group progresses?",
+  text: "Your group is stuck on a decision. How likely are you to be the one who makes the call?",
+  labelLow: "I wait for someone else",
+  labelHigh: "I make the call",
   category: "Influence",
   subcategory: "Decisiveness",
 };
 
 const GROUP_3: Question = {
   id: "group-3",
-  text: "You're in a group project and you barely know anyone else in the group. On a scale of 1-10, how likely is it that you'll be the first one to introduce yourself?",
+  text: "Room full of people you don't know. How likely are you to introduce yourself first?",
+  labelLow: "I wait to be approached",
+  labelHigh: "I go first",
   category: "Influence",
   subcategory: "Initiative",
 };
 
 const GROUP_4: Question = {
   id: "group-4",
-  text: "You're in a group project and you barely know anyone else in the group. A member of the group lets you know that they're going to miss a big deadline due to a family emergency. On a scale of 1-10, how likely are you to follow up with that group member while they've gone or after they've returned?",
+  text: "A group member misses a deadline for a family emergency. How likely are you to check in?",
+  labelLow: "I move on",
+  labelHigh: "I check in",
   category: "Influence",
   subcategory: "Consideration",
 };
 
 const MISC_1: Question = {
   id: "misc-1",
-  text: "You're in a group project and you barely know anyone else in the group. One member is out sick for the next week, and they had the most important part of the project. On a scale of 1-10, how confident are you that you can direct your team through the changing responsibilities?",
+  text: "Your most important group member goes out sick for a week. How confident are you directing the team through it?",
+  labelLow: "I freeze up",
+  labelHigh: "I take control",
   category: "Resilience",
   subcategory: "Adaptability",
 };
